@@ -1,0 +1,5 @@
+-cp src
+-js _
+--no-output
+
+codemirror.CodeMirror
