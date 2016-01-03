@@ -2,6 +2,13 @@
 -js _
 --no-output
 
+codemirror.ChangeObject
 codemirror.CodeMirror
 codemirror.Doc
+codemirror.EventEmitter
+codemirror.LineHandle
+codemirror.LineWidget
 codemirror.Options
+codemirror.Pos
+codemirror.Range
+codemirror.TextMarker
