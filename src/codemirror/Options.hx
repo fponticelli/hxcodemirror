@@ -123,5 +123,57 @@ typedef Options = {
   /**
   Can be used to make CodeMirror focus itself on initialization. Defaults to off. When fromTextArea is used, and no explicit value is given for this option, it will be set to true when either the source textarea is focused, or it has an autofocus attribute and no other element is focused.
   */
-  ?autofocus : Bool
+  ?autofocus : Bool,
+
+// ADVANCED OPTIONS
+
+  /**
+  Controls whether drag-and-drop is enabled. On by default.
+  */
+  ?dragDrop : Bool,
+  /**
+  When set (default is null) only files whose type is in the array can be dropped into the editor. The strings should be MIME types, and will be checked against the type of the File object as reported by the browser.
+  */
+  ?allowDropFileTypes: Array<String>,
+  /**
+  Half-period in milliseconds used for cursor blinking. The default blink rate is 530ms. By setting this to zero, blinking can be disabled. A negative value hides the cursor entirely.
+  */
+  ?cursorBlinkRate : Float,
+  /**
+  How much extra space to always keep above and below the cursor when approaching the top or bottom of the visible view in a scrollable document. Default is 0.
+  */
+  ?cursorScrollMargin : Float,
+  /**
+  Determines the height of the cursor. Default is 1, meaning it spans the whole height of the line. For some fonts (and by some tastes) a smaller height (for example 0.85), which causes the cursor to not reach all the way to the bottom of the line, looks better
+  */
+  ?cursorHeight : Float,
+  /**
+  Controls whether, when the context menu is opened with a click outside of the current selection, the cursor is moved to the point of the click. Defaults to true.
+  */
+  ?resetSelectionOnContextMenu : Bool,
+  /**
+  Highlighting is done by a pseudo background-thread that will work for workTime milliseconds, and then use timeout to sleep for workDelay milliseconds. The defaults are 200 and 300, you can change these options to make the highlighting more or less aggressive.
+  */
+  ?workTime : Float,
+  ?workDelay : Float,
+  /**
+  Indicates how quickly CodeMirror should poll its input textarea for changes (when focused). Most input is captured by events, but some things, like IME input on some browsers, don't generate events that allow CodeMirror to properly detect it. Thus, it polls. Default is 100 milliseconds.
+  */
+  ?pollInterval : Float,
+  /**
+  By default, CodeMirror will combine adjacent tokens into a single span if they have the same class. This will result in a simpler DOM tree, and thus perform better. With some kinds of styling (such as rounded corners), this will change the way the document looks. You can set this option to false to disable this behavior.
+  */
+  ?flattenSpans : Bool,
+  /**
+  When enabled (off by default), an extra CSS class will be added to each token, indicating the (inner) mode that produced it, prefixed with "cm-m-". For example, tokens from the XML mode will get the cm-m-xml class.
+  */
+  ?addModeClass : Bool,
+  /**
+  When highlighting long lines, in order to stay responsive, the editor will give up and simply style the rest of the line as plain text when it reaches a certain position. The default is 10 000. You can set this to Infinity to turn off this behavior.
+  */
+  ?maxHighlightLength : Float,
+  /**
+  Specifies the amount of lines that are rendered above and below the part of the document that's currently scrolled into view. This affects the amount of updates needed when scrolling, and the amount of work that such an update does. You should usually leave it at its default, 10. Can be set to Infinity to make sure the whole document is always rendered, and thus the browser's text search works on it. This will have bad effects on performance of big documents.
+  */
+  ?viewportMargin : Int,
 }
