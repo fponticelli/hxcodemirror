@@ -4,7 +4,7 @@ import js.html.Element;
 import js.html.TextAreaElement;
 
 @:native("CodeMirror")
-extern class CodeMirror {
+extern class CodeMirror extends EventEmitter {
   public static function fromTextArea(el : TextAreaElement, ?options : Options) : CodeMirror;
 
   @:override(function(callback : Element -> Void, ?options : Options) : Void {})

@@ -1,6 +1,6 @@
 package codemirror;
 
 @:native("CodeMirror.Doc")
-extern class Doc {
-  
+extern class Doc extends EventEmitter {
+
 }
