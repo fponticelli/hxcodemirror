@@ -3,7 +3,6 @@ package codemirror;
 extern class LineHandle extends EventEmitter {
 
   // EVENTS
-
   /**
   Will be fired when the line object is deleted. A line object is associated with the start of the line. Mostly useful when you need to find out when your gutter markers on a given line are removed.
   */

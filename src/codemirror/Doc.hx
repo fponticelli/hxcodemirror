@@ -4,7 +4,6 @@ package codemirror;
 extern class Doc extends EventEmitter {
 
   // EVENTS
-
   /**
   Fired whenever a change occurs to the document. changeObj has a similar type as the object passed to the editor's "change" event.
   */
