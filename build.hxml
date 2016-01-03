@@ -3,3 +3,5 @@
 --no-output
 
 codemirror.CodeMirror
+codemirror.Doc
+codemirror.Options

@@ -4,5 +4,6 @@ import js.html.Element;
 
 @:native("CodeMirror")
 extern class CodeMirror {
-  public function new(el : Element) : Void;
+  @:override(function(callback : Element -> Void, ?options : Options) : Void {})
+  public function new(el : Element, ?options : Options) : Void;
 }
