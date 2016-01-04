@@ -8,6 +8,7 @@ import haxe.extern.EitherType as E;
 @:native("CodeMirror")
 extern class CodeMirror extends EventEmitter {
   public static function fromTextArea(el : TextAreaElement, ?options : Options) : CodeMirror;
+  public static var version(default, null) : String;
 
   @:override(function(callback : Element -> Void, ?options : Options) : Void {})
   public function new(el : Element, ?options : Options) : Void;
