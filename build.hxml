@@ -7,8 +7,11 @@ codemirror.CodeMirror
 codemirror.Doc
 codemirror.EventEmitter
 codemirror.LineHandle
+codemirror.LineInfo
 codemirror.LineWidget
 codemirror.Options
 codemirror.Pos
 codemirror.Range
+codemirror.ScrollInfo
+codemirror.SelectionChange
 codemirror.TextMarker
