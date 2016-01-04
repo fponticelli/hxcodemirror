@@ -4,6 +4,7 @@ import js.html.Element;
 import js.html.Event;
 import js.html.TextAreaElement;
 import haxe.extern.EitherType as E;
+import codemirror.Pos;
 
 @:native("CodeMirror")
 extern class CodeMirror extends EventEmitter {
@@ -11,7 +12,7 @@ extern class CodeMirror extends EventEmitter {
   public static function fromTextArea(el : TextAreaElement, ?options : Options) : TextAreaCodeMirror;
 
   @:override(function(callback : Element -> Void, ?options : Options) : Void {})
-  public function new(el : Element, ?options : Options) : Void;
+  function new(el : Element, ?options : Options) : Void;
 
   // CURSOR AND SELECTION METHODS
   /**
@@ -21,11 +22,11 @@ extern class CodeMirror extends EventEmitter {
   /**
   Used to find the target position for horizontal cursor motion. start is a Pos object, amount an Int (may be negative), and unit one of the String "char", "column", or "word". Will return a position that is produced by moving amount times the distance specified by unit. When visually is true, motion in right-to-left text will be visual rather than logical. When the motion was clipped by hitting the end or start of the document, the returned value will have a hitSide property set to true.
   */
-  function findPosH(start: Pos, amount: Int, unit: String, visually: Bool) : {>Pos, ?hitSide: Bool};
+  function findPosH(start: Pos, amount: Int, unit: String, visually: Bool) : PosHit;
   /**
   Similar to findPosH, but used for vertical motion. unit may be "line" or "page". The other arguments and the returned value have the same interpretation as they have in findPosH.
   */
-  function findPosV(start: Pos, amount: Int, unit: String) : {>Pos, ?hitSide: Bool};
+  function findPosV(start: Pos, amount: Int, unit: String) : PosHit;
   /**
   Returns the start and end of the 'word' (the stretch of letters, whitespace, or punctuation) at the given position.
   */
