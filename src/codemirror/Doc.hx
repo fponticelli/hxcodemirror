@@ -28,8 +28,8 @@ extern class Doc extends EventEmitter {
   /**
   Equivalent to the event by the same name as fired on editor instances.
   */
-  inline function onBeforeSelectionChange(handler : Doc -> { ranges : Array<Range>, origin : String, update : Array<Range> -> Void } -> Void) : Void
+  inline function onBeforeSelectionChange(handler : Doc -> SelectionChange -> Void) : Void
     this.on("beforeSelectionChange", handler);
-  inline function offBeforeSelectionChange(handler : Doc -> { ranges : Array<Range>, origin : String, update : Array<Range> -> Void } -> Void) : Void
+  inline function offBeforeSelectionChange(handler : Doc -> SelectionChange -> Void) : Void
     this.off("beforeSelectionChange", handler);
 }
