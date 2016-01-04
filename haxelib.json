@@ -1,0 +1,12 @@
+{
+  "name": "codemirror",
+  "url": "https://github.com/fponticelli/hxcodemirror",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["js", "ide", "html", "text editor"],
+  "description": "CodeMirror externs.",
+  "releasenote": "first release.",
+  "version": "0.1.0",
+  "contributors": ["fponticelli"],
+  "dependencies" : {}
+}
