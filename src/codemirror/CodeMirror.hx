@@ -7,7 +7,7 @@ import haxe.extern.EitherType as E;
 import codemirror.Pos;
 
 @:native("CodeMirror")
-extern class CodeMirror extends EventEmitter {
+extern class CodeMirror extends BasicDoc {
   static var version(default, null) : String;
   /**
   An object containing default values for all options. You can assign to its properties to modify defaults (though this won't affect editors that have already been created).
@@ -57,8 +57,10 @@ extern class CodeMirror extends EventEmitter {
   */
   static function fromTextArea(el : TextAreaElement, ?options : Options) : TextAreaCodeMirror;
 
-  @:override(function(callback : Element -> Void, ?options : Options) : Void {})
-  function new(el : Element, ?options : Options) : Void;
+  @:override(function(callback : Element -> Void) : Void {})
+  @:override(function(callback : Element -> Void, options : Options) : Void {})
+  @:override(function(el : Element) : Void {})
+  function new(el : Element, options : Options) : Void;
 
   // CURSOR AND SELECTION METHODS
   /**
@@ -652,33 +654,12 @@ extern class CodeMirror extends EventEmitter {
 
   // EVENTS
   /**
-  Fires every time the content of the editor is changed. The changeObj is a {from, to, text, removed, origin} object containing information about the changes that occurred as second argument. from and to are the positions (in the pre-change coordinate system) where the change started and ended (for example, it might be {ch:0, line:18} if the position is at the beginning of line #19). text is an array of Strings representing the text that replaced the changed range (split by line). removed is the text that used to be between from and to, which is overwritten by this change. This event is fired before the end of an operation, before the DOM updates happen.
-  */
-  inline function onChange(handler : CodeMirror -> ChangeObject -> Void) : Void
-    this.on("change", handler);
-  inline function offChange(handler : CodeMirror -> ChangeObject -> Void) : Void
-    this.off("change", handler);
-  /**
   Like the "change" event, but batched per operation, passing an array containing all the changes that happened in the operation. This event is fired after the operation finished, and display changes it makes will trigger a new operation.
   */
   inline function onChanges(handler : CodeMirror -> Array<ChangeObject>) : Void
     this.on("changes", handler);
   inline function offChanges(handler : CodeMirror -> Array<ChangeObject>) : Void
     this.off("changes", handler);
-  /**
-  This event is fired before a change is applied, and its handler may choose to modify or cancel the change. The changeObj object has from, to, and text properties, as with the "change" event. It also has a cancel() method, which can be called to cancel the change, and, if the change isn't coming from an undo or redo event, an update(from, to, text) method, which may be used to modify the change. Undo or redo changes can't be modified, because they hold some metainformation for restoring old marked ranges that is only valid for that specific change. All three arguments to update are optional, and can be left off to leave the existing value for that field intact. Note: you may not do anything from a "beforeChange" handler that would cause changes to the document or its visualization. Doing so will, since this handler is called directly from the bowels of the CodeMirror implementation, probably cause the editor to become corrupted.
-  */
-  inline function onBeforeChange(handler : CodeMirror -> ChangeObject -> Void) : Void
-    this.on("beforeChange", handler);
-  inline function offBeforeChange(handler : CodeMirror -> ChangeObject -> Void) : Void
-    this.off("beforeChange", handler);
-  /**
-  Will be fired when the cursor or selection moves, or any change is made to the editor content.
-  */
-  inline function onCursorActivity(handler : CodeMirror -> Void) : Void
-    this.on("cursorActivity", handler);
-  inline function offCursorActivity(handler : CodeMirror -> Void) : Void
-    this.off("cursorActivity", handler);
   /**
   Fired after a key is handled through a key map. name is the name of the handled key (for example "Ctrl-X" or "'q'"), and event is the DOM keydown or keypress event.
   */
@@ -700,13 +681,6 @@ extern class CodeMirror extends EventEmitter {
     this.on("electrictInput", handler);
   inline function offElectrictInput(handler : CodeMirror -> Int -> Void) : Void
     this.off("electrictInput", handler);
-  /**
-  This event is fired before the selection is moved. Its handler may inspect the set of selection ranges, present as an array of {anchor, head} objects in the ranges property of the obj argument, and optionally change them by calling the update method on this object, passing an array of ranges in the same format. The object also contains an origin property holding the origin String passed to the selection-changing method, if any. Handlers for this event have the same restriction as "beforeChange" handlers — they should not do anything to directly update the state of the editor.
-  */
-  inline function onBeforeSelectionChange(handler : CodeMirror -> SelectionChange -> Void) : Void
-    this.on("beforeSelectionChange", handler);
-  inline function offBeforeSelectionChange(handler : CodeMirror -> SelectionChange -> Void) : Void
-    this.off("beforeSelectionChange", handler);
   /**
   Fires whenever the view port of the editor changes (due to scrolling, editing, or any other factor). The from and to arguments give the new start and end of the viewport.
   */
@@ -784,52 +758,52 @@ extern class CodeMirror extends EventEmitter {
     this.on("mousedown", handler);
   inline function offMousedown(handler : CodeMirror -> Event -> Void) : Void
     this.off("mousedown", handler);
-  inline function dblclick(handler : CodeMirror -> Event -> Void) : Void
+  inline function onDblclick(handler : CodeMirror -> Event -> Void) : Void
     this.on("dblclick", handler);
-  inline function dfflclick(handler : CodeMirror -> Event -> Void) : Void
+  inline function offDblclick(handler : CodeMirror -> Event -> Void) : Void
     this.off("dblclick", handler);
-  inline function contextmenu(handler : CodeMirror -> Event -> Void) : Void
+  inline function onContextmenu(handler : CodeMirror -> Event -> Void) : Void
     this.on("contextmenu", handler);
-  inline function cffntextmenu(handler : CodeMirror -> Event -> Void) : Void
+  inline function offContextmenu(handler : CodeMirror -> Event -> Void) : Void
     this.off("contextmenu", handler);
-  inline function keydown(handler : CodeMirror -> Event -> Void) : Void
+  inline function onKeydown(handler : CodeMirror -> Event -> Void) : Void
     this.on("keydown", handler);
-  inline function kffydown(handler : CodeMirror -> Event -> Void) : Void
+  inline function offKeydown(handler : CodeMirror -> Event -> Void) : Void
     this.off("keydown", handler);
-  inline function keypress(handler : CodeMirror -> Event -> Void) : Void
+  inline function onKeypress(handler : CodeMirror -> Event -> Void) : Void
     this.on("keypress", handler);
-  inline function kffypress(handler : CodeMirror -> Event -> Void) : Void
+  inline function offKeypress(handler : CodeMirror -> Event -> Void) : Void
     this.off("keypress", handler);
-  inline function keyup(handler : CodeMirror -> Event -> Void) : Void
+  inline function onKeyup(handler : CodeMirror -> Event -> Void) : Void
     this.on("keyup", handler);
-  inline function kffyup(handler : CodeMirror -> Event -> Void) : Void
+  inline function offKeyup(handler : CodeMirror -> Event -> Void) : Void
     this.off("keyup", handler);
-  inline function cut(handler : CodeMirror -> Event -> Void) : Void
+  inline function onCut(handler : CodeMirror -> Event -> Void) : Void
     this.on("cut", handler);
-  inline function cfft(handler : CodeMirror -> Event -> Void) : Void
+  inline function offCut(handler : CodeMirror -> Event -> Void) : Void
     this.off("cut", handler);
-  inline function copy(handler : CodeMirror -> Event -> Void) : Void
+  inline function onCopy(handler : CodeMirror -> Event -> Void) : Void
     this.on("copy", handler);
-  inline function cffpy(handler : CodeMirror -> Event -> Void) : Void
+  inline function offCopy(handler : CodeMirror -> Event -> Void) : Void
     this.off("copy", handler);
-  inline function paste(handler : CodeMirror -> Event -> Void) : Void
+  inline function onPaste(handler : CodeMirror -> Event -> Void) : Void
     this.on("paste", handler);
-  inline function pffste(handler : CodeMirror -> Event -> Void) : Void
+  inline function offPaste(handler : CodeMirror -> Event -> Void) : Void
     this.off("paste", handler);
-  inline function dragstart(handler : CodeMirror -> Event -> Void) : Void
+  inline function onDragstart(handler : CodeMirror -> Event -> Void) : Void
     this.on("dragstart", handler);
-  inline function dffagstart(handler : CodeMirror -> Event -> Void) : Void
+  inline function offDragstart(handler : CodeMirror -> Event -> Void) : Void
     this.off("dragstart", handler);
-  inline function dragenter(handler : CodeMirror -> Event -> Void) : Void
+  inline function onDragenter(handler : CodeMirror -> Event -> Void) : Void
     this.on("dragenter", handler);
-  inline function dffagenter(handler : CodeMirror -> Event -> Void) : Void
+  inline function offDragenter(handler : CodeMirror -> Event -> Void) : Void
     this.off("dragenter", handler);
-  inline function dragover(handler : CodeMirror -> Event -> Void) : Void
+  inline function onDragover(handler : CodeMirror -> Event -> Void) : Void
     this.on("dragover", handler);
-  inline function dffagover(handler : CodeMirror -> Event -> Void) : Void
+  inline function offDragover(handler : CodeMirror -> Event -> Void) : Void
     this.off("dragover", handler);
-  inline function drop(handler : CodeMirror -> Event -> Void) : Void
+  inline function onDrop(handler : CodeMirror -> Event -> Void) : Void
     this.on("drop", handler);
-  inline function dffop(handler : CodeMirror -> Event -> Void) : Void
+  inline function offDrop(handler : CodeMirror -> Event -> Void) : Void
     this.off("drop", handler);
 }
