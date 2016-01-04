@@ -8,8 +8,45 @@ import codemirror.Pos;
 
 @:native("CodeMirror")
 extern class CodeMirror extends EventEmitter {
-  public static var version(default, null) : String;
-  public static function fromTextArea(el : TextAreaElement, ?options : Options) : TextAreaCodeMirror;
+  static var version(default, null) : String;
+  /**
+  An object containing default values for all options. You can assign to its properties to modify defaults (though this won't affect editors that have already been created).
+  */
+  static var defaults(default, null) : Options;
+
+  /**
+  If you want to define extra methods in terms of the CodeMirror API, it is possible to use defineExtension. This will cause the given value (usually a method) to be added to all CodeMirror instances created from then on.
+  */
+  static function defineExtension(name : String, value : Dynamic) : Void;
+  /**
+  Like defineExtension, but the method will be added to the interface for Doc objects instead.
+  */
+  static function defineDocExtension(name : String, value : Dynamic) : Void;
+  /**
+  Similarly, defineOption can be used to define new options for CodeMirror. The updateFunc will be called with the editor instance and the new value when an editor is initialized, and whenever the option is modified through setOption.
+  */
+  static function defineOption<T>(name: String, defaultValue: T, updateFunc: CodeMirror -> T -> Void) : Void;
+  /**
+  If your extention just needs to run some code whenever a CodeMirror instance is initialized, use CodeMirror.defineInitHook. Give it a function as its only argument, and from then on, that function will be called (with the instance as argument) whenever a new CodeMirror instance is initialized.
+  */
+  static function defineInitHook(func: CodeMirror -> Void) : Void;
+  /**
+  Registers a helper value with the given name in the given namespace (type). This is used to define functionality that may be looked up by mode. Will create (if it doesn't already exist) a property on the CodeMirror object for the given type, pointing to an object that maps names to values. I.e. after doing CodeMirror.registerHelper("hint", "foo", myFoo), the value CodeMirror.hint.foo will point to myFoo.
+  */
+  static function registerHelper(type: String, name: String, value: Dynamic) : Void;
+  /**
+  Acts like registerHelper, but also registers this helper as 'global', meaning that it will be included by getHelpers whenever the given predicate returns true when called with the local mode and editor.
+  */
+  static function registerGlobalHelper(type: String, name: String, predicate: String -> CodeMirror -> Dynamic -> Bool) : Void;
+  /**
+  Utility function that computes an end position from a change (an object with from, to, and text properties, as passed to various event handlers). The returned position will be the end of the changed range, after the change is applied.
+  */
+  static function changeEnd(change: { from : Pos, to : Pos, text : String }) : Pos;
+
+  /**
+  The method provides another way to initialize an editor. It takes a textarea DOM node as first argument and an optional configuration object as second. It will replace the textarea with a CodeMirror instance, and wire up the form of that textarea (if any) to make sure the editor contents are put into the textarea when the form is submitted. The text in the textarea will provide the content for the editor.
+  */
+  static function fromTextArea(el : TextAreaElement, ?options : Options) : TextAreaCodeMirror;
 
   @:override(function(callback : Element -> Void, ?options : Options) : Void {})
   function new(el : Element, ?options : Options) : Void;
