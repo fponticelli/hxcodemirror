@@ -4,6 +4,7 @@
 
 codemirror.ChangeObject
 codemirror.CodeMirror
+codemirror.Commands
 codemirror.Doc
 codemirror.EventEmitter
 codemirror.LineHandle

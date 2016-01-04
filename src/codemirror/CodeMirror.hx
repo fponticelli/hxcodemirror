@@ -15,6 +15,15 @@ extern class CodeMirror extends EventEmitter {
   static var defaults(default, null) : Options;
 
   /**
+  Commands are parameter-less actions that can be performed on an editor. Their main use is for key bindings. Commands are defined by adding properties to the CodeMirror.commands object. A number of common commands are defined by the library itself, most of them used by the default key bindings. The value of a command property must be a function of one argument (an editor instance).
+
+  Some of the commands below are referenced in the default key map, but not defined by the core library. These are intended to be defined by user code or addons.
+
+  Commands can also be run with the execCommand method.
+  */
+  static var commands(default, null) : Commands;
+
+  /**
   If you want to define extra methods in terms of the CodeMirror API, it is possible to use defineExtension. This will cause the given value (usually a method) to be added to all CodeMirror instances created from then on.
   */
   static function defineExtension(name : String, value : Dynamic) : Void;
@@ -224,6 +233,402 @@ extern class CodeMirror extends EventEmitter {
   Runs the command with the given name on the editor.
   */
   function execCommand(name: String) : Void;
+
+
+  /**
+  Select the whole content of the editor.
+  ```
+  Ctrl-A (PC), Cmd-A (Mac)
+  ```
+  */
+  inline function execSelectAll() : Void
+    this.execCommand("selectAll");
+  /**
+  When multiple selections are present, this deselects all but the primary selection.
+  ```
+  Esc
+  ```
+  */
+  inline function execSingleSelection() : Void
+    this.execCommand("singleSelection");
+  /**
+  Emacs-style line killing. Deletes the part of the line after the cursor. If that consists only of whitespace, the newline at the end of the line is also deleted.
+  ```
+  Ctrl-K (Mac)
+  ```
+  */
+  inline function execKillLine() : Void
+    this.execCommand("killLine");
+  /**
+  Deletes the whole line under the cursor, including newline at the end.
+  ```
+  Ctrl-D (PC), Cmd-D (Mac)
+  ```
+  */
+  inline function execDeleteLine() : Void
+    this.execCommand("deleteLine");
+  /**
+  Delete the part of the line before the cursor.
+  */
+  inline function execDelLineLeft() : Void
+    this.execCommand("delLineLeft");
+  /**
+  Delete the part of the line from the left side of the visual line the cursor is on to the cursor.
+  ```
+  Cmd-Backspace (Mac)
+  ```
+  */
+  inline function execDelWrappedLineLeft() : Void
+    this.execCommand("delWrappedLineLeft");
+  /**
+  Delete the part of the line from the cursor to the right side of the visual line the cursor is on.
+  ```
+  Cmd-Delete (Mac)
+  ```
+  */
+  inline function execDelWrappedLineRight() : Void
+    this.execCommand("delWrappedLineRight");
+  /**
+  Undo the last change.
+  ```
+  Ctrl-Z (PC), Cmd-Z (Mac)
+  ```
+  */
+  inline function execUndo() : Void
+    this.execCommand("undo");
+  /**
+  Redo the last undone change.
+  ```
+  Ctrl-Y (PC), Shift-Cmd-Z (Mac), Cmd-Y (Mac)
+  ```
+  */
+  inline function execRedo() : Void
+    this.execCommand("redo");
+  /**
+  Undo the last change to the selection, or if there are no selection-only changes at the top of the history, undo the last change.
+  ```
+  Ctrl-U (PC), Cmd-U (Mac)
+  ```
+  */
+  inline function execUndoSelection() : Void
+    this.execCommand("undoSelection");
+  /**
+  Redo the last change to the selection, or the last text change if no selection changes remain.
+  ```
+  Alt-U (PC), Shift-Cmd-U (Mac)
+  ```
+  */
+  inline function execRedoSelection() : Void
+    this.execCommand("redoSelection");
+  /**
+  Move the cursor to the start of the document.
+  ```
+  Ctrl-Home (PC), Cmd-Up (Mac), Cmd-Home (Mac)
+  ```
+  */
+  inline function execGoDocStart() : Void
+    this.execCommand("goDocStart");
+  /**
+  Move the cursor to the end of the document.
+  ```
+  Ctrl-End (PC), Cmd-End (Mac), Cmd-Down (Mac)
+  ```
+  */
+  inline function execGoDocEnd() : Void
+    this.execCommand("goDocEnd");
+  /**
+  Move the cursor to the start of the line.
+  ```
+  Alt-Left (PC), Ctrl-A (Mac)
+  ```
+  */
+  inline function execGoLineStart() : Void
+    this.execCommand("goLineStart");
+  /**
+  Move to the start of the text on the line, or if we are already there, to the actual start of the line (including whitespace).
+  ```
+  Home
+  ```
+  */
+  inline function execGoLineStartSmart() : Void
+    this.execCommand("goLineStartSmart");
+  /**
+  Move the cursor to the end of the line.
+  ```
+  Alt-Right (PC), Ctrl-E (Mac)
+  ```
+  */
+  inline function execGoLineEnd() : Void
+    this.execCommand("goLineEnd");
+  /**
+  Move the cursor to the right side of the visual line it is on.
+  ```
+  Cmd-Right (Mac)
+  ```
+  */
+  inline function execGoLineRight() : Void
+    this.execCommand("goLineRight");
+  /**
+  Move the cursor to the left side of the visual line it is on. If this line is wrapped, that may not be the start of the line.
+  ```
+  Cmd-Left (Mac)
+  ```
+  */
+  inline function execGoLineLeft() : Void
+    this.execCommand("goLineLeft");
+  /**
+  Move the cursor to the left side of the visual line it is on. If that takes it to the start of the line, behave like goLineStartSmart.
+  */
+  inline function execGoLineLeftSmart() : Void
+    this.execCommand("goLineLeftSmart");
+  /**
+  Move the cursor up one line.
+  ```
+  Up, Ctrl-P (Mac)
+  ```
+  */
+  inline function execGoLineUp() : Void
+    this.execCommand("goLineUp");
+  /**
+  Move down one line.
+  ```
+  Down, Ctrl-N (Mac)
+  ```
+  */
+  inline function execGoLineDown() : Void
+    this.execCommand("goLineDown");
+  /**
+  Move the cursor up one screen, and scroll up by the same distance.
+  ```
+  PageUp, Shift-Ctrl-V (Mac)
+  ```
+  */
+  inline function execGoPageUp() : Void
+    this.execCommand("goPageUp");
+  /**
+  Move the cursor down one screen, and scroll down by the same distance.
+  ```
+  PageDown, Ctrl-V (Mac)
+  ```
+  */
+  inline function execGoPageDown() : Void
+    this.execCommand("goPageDown");
+  /**
+  Move the cursor one character left, going to the previous line when hitting the start of line.
+  ```
+  Left, Ctrl-B (Mac)
+  ```
+  */
+  inline function execGoCharLeft() : Void
+    this.execCommand("goCharLeft");
+  /**
+  Move the cursor one character right, going to the next line when hitting the end of line.
+  ```
+  Right, Ctrl-F (Mac)
+  ```
+  */
+  inline function execGoCharRight() : Void
+    this.execCommand("goCharRight");
+  /**
+  Move the cursor one character left, but don't cross line boundaries.
+  */
+  inline function execGoColumnLeft() : Void
+    this.execCommand("goColumnLeft");
+  /**
+  Move the cursor one character right, don't cross line boundaries.
+  */
+  inline function execGoColumnRight() : Void
+    this.execCommand("goColumnRight");
+  /**
+  Move the cursor to the start of the previous word.
+  ```
+  Alt-B (Mac)
+  ```
+  */
+  inline function execGoWordLeft() : Void
+    this.execCommand("goWordLeft");
+  /**
+  Move the cursor to the end of the next word.
+  ```
+  Alt-F (Mac)
+  ```
+  */
+  inline function execGoWordRight() : Void
+    this.execCommand("goWordRight");
+  /**
+  Move to the left of the group before the cursor. A group is a stretch of word characters, a stretch of punctuation characters, a newline, or a stretch of more than one whitespace character.
+  ```
+  Ctrl-Left (PC), Alt-Left (Mac)
+  ```
+  */
+  inline function execGoGroupLeft() : Void
+    this.execCommand("goGroupLeft");
+  /**
+  Move to the right of the group after the cursor (see above).
+  ```
+  Ctrl-Right (PC), Alt-Right (Mac)
+  ```
+  */
+  inline function execGoGroupRight() : Void
+    this.execCommand("goGroupRight");
+  /**
+  Delete the character before the cursor.
+  ```
+  Shift-Backspace, Ctrl-H (Mac)
+  ```
+  */
+  inline function execDelCharBefore() : Void
+    this.execCommand("delCharBefore");
+  /**
+  Delete the character after the cursor.
+  ```
+  Delete, Ctrl-D (Mac)
+  ```
+  */
+  inline function execDelCharAfter() : Void
+    this.execCommand("delCharAfter");
+  /**
+  Delete up to the start of the word before the cursor.
+  ```
+  Alt-Backspace (Mac)
+  ```
+  */
+  inline function execDelWordBefore() : Void
+    this.execCommand("delWordBefore");
+  /**
+  Delete up to the end of the word after the cursor.
+  ```
+  Alt-D (Mac)
+  ```
+  */
+  inline function execDelWordAfter() : Void
+    this.execCommand("delWordAfter");
+  /**
+  Delete to the left of the group before the cursor.
+  ```
+  Ctrl-Backspace (PC), Alt-Backspace (Mac)
+  ```
+  */
+  inline function execDelGroupBefore() : Void
+    this.execCommand("delGroupBefore");
+  /**
+  Delete to the start of the group after the cursor.
+  ```
+  Ctrl-Delete (PC), Ctrl-Alt-Backspace (Mac), Alt-Delete (Mac)
+  ```
+  */
+  inline function execDelGroupAfter() : Void
+    this.execCommand("delGroupAfter");
+  /**
+  Auto-indent the current line or selection.
+  ```
+  Shift-Tab
+  ```
+  */
+  inline function execIndentAuto() : Void
+    this.execCommand("indentAuto");
+  /**
+  Indent the current line or selection by one indent unit.
+  ```
+  Ctrl-] (PC), Cmd-] (Mac)
+  ```
+  */
+  inline function execIndentMore() : Void
+    this.execCommand("indentMore");
+  /**
+  Dedent the current line or selection by one indent unit.
+  ```
+  Ctrl-[ (PC), Cmd-[ (Mac)
+  ```
+  */
+  inline function execIndentLess() : Void
+    this.execCommand("indentLess");
+  /**
+  Insert a tab character at the cursor.
+  */
+  inline function execInsertTab() : Void
+    this.execCommand("insertTab");
+  /**
+  Insert the amount of spaces that match the width a tab at the cursor position would have.
+  */
+  inline function execInsertSoftTab() : Void
+    this.execCommand("insertSoftTab");
+  /**
+  If something is selected, indent it by one indent unit. If nothing is selected, insert a tab character.
+  ```
+  Tab
+  ```
+  */
+  inline function execDefaultTab() : Void
+    this.execCommand("defaultTab");
+  /**
+  Swap the characters before and after the cursor.
+  ```
+  Ctrl-T (Mac)
+  ```
+  */
+  inline function execTransposeChars() : Void
+    this.execCommand("transposeChars");
+  /**
+  Insert a newline and auto-indent the new line.
+  ```
+  Enter
+  ```
+  */
+  inline function execNewlineAndIndent() : Void
+    this.execCommand("newlineAndIndent");
+  /**
+  Flip the overwrite flag.
+  ```
+  Insert
+  ```
+  */
+  inline function execToggleOverwrite() : Void
+    this.execCommand("toggleOverwrite");
+  /**
+  Not defined by the core library, only referred to in key maps. Intended to provide an easy way for user code to define a save command.
+  ```
+  Ctrl-S (PC), Cmd-S (Mac)
+  ```
+  */
+  inline function execSave() : Void
+    this.execCommand("save");
+  /**
+  ```
+  Ctrl-F (PC), Cmd-F (Mac)
+  ```
+  */
+  inline function execFind() : Void
+    this.execCommand("find");
+  /**
+  ```
+  Ctrl-G (PC), Cmd-G (Mac)
+  ```
+  */
+  inline function execFindNext() : Void
+    this.execCommand("findNext");
+  /**
+  ```
+  Shift-Ctrl-G (PC), Shift-Cmd-G (Mac)
+  ```
+  */
+  inline function execFindPrev() : Void
+    this.execCommand("findPrev");
+  /**
+  ```
+  Shift-Ctrl-F (PC), Cmd-Alt-F (Mac)
+  ```
+  */
+  inline function execReplace() : Void
+    this.execCommand("replace");
+  /**
+  ```
+  Shift-Ctrl-R (PC), Shift-Cmd-Alt-F (Mac)
+  ```
+  */
+  inline function execReplaceAll() : Void
+    this.execCommand("replaceAll");
+
   /**
   Give the editor focus.
   */
