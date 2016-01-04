@@ -57,9 +57,9 @@ extern class CodeMirror extends BasicDoc {
   */
   static function fromTextArea(el : TextAreaElement, ?options : Options) : TextAreaCodeMirror;
 
-  @:override(function(callback : Element -> Void) : Void {})
-  @:override(function(callback : Element -> Void, options : Options) : Void {})
-  @:override(function(el : Element) : Void {})
+  @:overload(function(callback : Element -> Void) : Void {})
+  @:overload(function(callback : Element -> Void, options : Options) : Void {})
+  @:overload(function(el : Element) : Void {})
   function new(el : Element, options : Options) : Void;
 
   // CURSOR AND SELECTION METHODS

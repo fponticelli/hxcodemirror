@@ -53,7 +53,7 @@ extern class BasicDoc extends EventEmitter {
   /**
   Iterate over the whole document, or if start and end line numbers are given, the range from start up to (not including) end, and call f for each line, passing the line handle. This is a faster way to visit a range of line handlers than calling getLineHandle for each of them. Note that line handles have a text property containing the line's content (as a String).
   */
-  @:override(function (start: Int, end: Int, f: LineHandle -> Void) : Void {})
+  @:overload(function (start: Int, end: Int, f: LineHandle -> Void) : Void {})
   function eachLine(f: LineHandle -> Void) : Void;
   /**
   Set the editor content as 'clean', a flag that it will retain until it is edited, and which will be set again when such an edit is undone again. Useful to track whether the content needs to be saved. This function is deprecated in favor of changeGeneration, which allows multiple subsystems to track different notions of cleanness without interfering.
