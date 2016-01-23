@@ -656,9 +656,9 @@ extern class CodeMirror extends BasicDoc {
   /**
   Like the "change" event, but batched per operation, passing an array containing all the changes that happened in the operation. This event is fired after the operation finished, and display changes it makes will trigger a new operation.
   */
-  inline function onChanges(handler : CodeMirror -> Array<ChangeObject>) : Void
+  inline function onChanges(handler : CodeMirror -> Array<ChangeObject> -> Void) : Void
     this.on("changes", handler);
-  inline function offChanges(handler : CodeMirror -> Array<ChangeObject>) : Void
+  inline function offChanges(handler : CodeMirror -> Array<ChangeObject> -> Void) : Void
     this.off("changes", handler);
   /**
   Fired after a key is handled through a key map. name is the name of the handled key (for example "Ctrl-X" or "'q'"), and event is the DOM keydown or keypress event.
@@ -677,10 +677,10 @@ extern class CodeMirror extends BasicDoc {
   /**
   Fired if text input matched the mode's electric patterns, and this caused the line's indentation to change.
   */
-  inline function onElectrictInput(handler : CodeMirror -> Int -> Void) : Void
-    this.on("electrictInput", handler);
-  inline function offElectrictInput(handler : CodeMirror -> Int -> Void) : Void
-    this.off("electrictInput", handler);
+  inline function onElectricInput(handler : CodeMirror -> Int -> Void) : Void
+    this.on("electricInput", handler);
+  inline function offElectricInput(handler : CodeMirror -> Int -> Void) : Void
+    this.off("electricInput", handler);
   /**
   Fires whenever the view port of the editor changes (due to scrolling, editing, or any other factor). The from and to arguments give the new start and end of the viewport.
   */
